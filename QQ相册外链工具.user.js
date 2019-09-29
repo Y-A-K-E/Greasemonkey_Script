@@ -1,18 +1,35 @@
 // ==UserScript==
 // @name         QQ相册外链工具
 // @namespace    https://www.yge.me
-// @version      0.4
+// @version      0.5
 // @description  QQ空间相册外链脚本,支持HTTPS
 // @author       Y.A.K.E
 // @match        https://qzs.qq.com/qzone/*
 // @match        https://h5.qzone.qq.com/page/photo*
 // @match        https://user.qzone.qq.com/proxy/domain/qzs.qq.com/qzone/client/photo*
+// @match        https://user.qzone.qq.com/proxy/domain/qzs.qq.com/qzone/photo/*
 // @run-at       document-end
 // @grant        GM_setClipboard
+// @grant        unsafeWindow
 // ==/UserScript==
+
+
 
 (function() {
     'use strict';
+
+
+window.injectjq=function(){
+  var script=document.createElement("script");
+  script.type="text/javascript";
+  script.src="https://qzonestyle.gtimg.cn/ac/lib/jquery/jquery-2.0.3.js";
+  document.getElementsByTagName('head')[0].appendChild(script);
+
+}
+if(typeof jQuery == 'undefined'){
+   window.injectjq;
+}
+
 
     window.duang =function(){
         console.log("duang执行     \r\n");

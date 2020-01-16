@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         QQ相册外链工具
 // @namespace    https://www.yge.me
-// @version      0.6
+// @version      0.7
 // @description  QQ空间相册外链脚本,支持HTTPS
 // @author       Y.A.K.E
 // @match        https://user.qzone.qq.com/proxy/domain/qzs.qq.com/qzone/client/photo*
 // @match        https://user.qzone.qq.com/proxy/domain/qzs.qq.com/qzone/photo/*
+// @match        https://rc.qzone.qq.com/proxy/domain/qzs.qq.com/qzone/client/photo*
+// @match        https://rc.qzone.qq.com/proxy/domain/qzs.qq.com/qzone/photo/*
 // @run-at       document-end
 // @grant        GM_setClipboard
 // @grant        unsafeWindow
@@ -23,33 +25,45 @@ window.parent.ycp = function(cpurl){
 window.onload = function () {
 
 
+console.log('检测当前URL');
+    console.log(document.URL);
 
 
 
 
 
 
-
-    console.log('注册外链转换函数');
+    console.log('开始注册外链转换函数');
     //外链地址获取函数
+    //腾讯新地址
     window.get_ex_url = function(oldurl){
-        var reg = /http\w?:\/\/.*?\/psb\?\/(.*?)\/(.*?)\/\w\/(.*?)&/gi
+        //var reg = /http\w?:\/\/.*?\/psb\?\/(.*?)\/(.*?)\/\w\/(.*?)&/gi
+        var reg = /http\w?:\/\/.*?\/ps(\w)\?\/(.*?)\/(.*?)\/\w\/(.*?)$/gi
+        var reg2 = /http\w?:\/\/.*?\/psc\?\/(.*?)$/gi
+
         var result;
         var newurl;
         if ((result = reg.exec(oldurl)) !== null) {
-            newurl = "//r.photo.store.qq.com/psb?/" + result[1]  + "/" +  result[2] + "/r/"+  result[3] + "/_yake_qzoneimgout.png";
+            console.log('匹配1');
+            newurl = "//r.photo.store.qq.com/ps"+ result[1] +"?/" + result[2]  + "/" +  result[3] + "/r/"+  result[4] + "_yake_qzoneimgout.png";
             return newurl;
         }else{
+            if ((result = reg2.exec(oldurl)) !== null) {
+                console.log('匹配2');
+                 newurl = "//r.photo.store.qq.com/psc?/" + result[1]  +   "/r/_yake_qzoneimgout.png";
+                return newurl;
+            }
             return  '';
         }
     };
 
+    console.log('注册外链转换函数,完成')
 
-if(typeof jQuery == 'undefined') {
+//if(typeof jQuery == 'undefined') {
     //console.log("载入JQ "+ window.document.URL+"    \r\n");
-    var jQuery=window.parent.jQuery;  //JQ继承
+    //var jQuery=window.parent.jQuery;  //JQ继承
     //console.log(jQuery('body'));
-}
+//}
 
     window.duang =function(){
         console.log("duang执行     \r\n");
@@ -77,9 +91,12 @@ if(typeof jQuery == 'undefined') {
 
 
 
-        //console.log("检测点开始");
+        console.log("检测点开始");
+
+    //jQuery('.j-pl-photoitem').each(function(e){ console.log(jQuery(this))});
+//j-pl-photoitem
         jQuery('li.j-pl-photoitem').on('mouseover',function(){
-            console.log("mouseover事件     \r\n");
+            //console.log("mouseover事件     \r\n");
             var t_imgobj =jQuery(this).find('img.j-pl-photoitem-img');
 
             var t_imgsrc =t_imgobj.attr('src') ;

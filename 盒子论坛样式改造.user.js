@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         盒子论坛样式改造
 // @namespace    https://www.yge.me
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       Y.A.K.E
 // @match        http://bbs.2ccc.com/*
@@ -18,6 +18,10 @@
 
 
     //老衲也不是很懂JS/CSS 都是百度东拼西凑凑来的.
+
+    //设置  隐藏首页回帖,默认开启.
+    var set_hide_home_reply =  1;
+
 
 
 
@@ -56,7 +60,19 @@
     importStyle('* { font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,"Helvetica Neue",Arial,sans-serif !important;font-size:14px !important;line-height:25px !important;  }');
     importStyle('hr {border: 1px solid rgb(229, 229, 229) !important;}');
 
+    //背景颜色
+    importStyle('body  {background-color: #cccccc !important;}');
+    importStyle('td  {background-color: #cccccc !important;}');
 
+    //隐藏首页回帖
+    if (set_hide_home_reply) {
+        importStyle('.child  {display: none;}');
+    }
+
+
+
+    //首页贴子标题
+    importStyle('.parent a {color: #2d64b3!important; font-size:15px !important;}');
 
     //引用响应式框架bootstrap样式文件
     loadjscssfile("https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css","css");
@@ -85,21 +101,25 @@
     jQuery('body > .container  > table:eq(2) >tbody>tr>td:eq(2)').css('width','90%');
 
 
+
     //-------------------首页
     //每个标题追加间距
-    jQuery('div.parent').css({'margin-top': '40px'});
+    jQuery('div.parent').css({'margin-top': '20px'});
     jQuery('div.parent:eq(0)').css({'margin-top': '0px'});//首行无需
 
     //回帖预览最小高度
     jQuery('div.child > table > tbody >tr').css({'min-height':'30px'});
 
     //调整首页回帖预览宽度
-    jQuery('div.child > table > tbody >tr ').each(function(){
-        jQuery(this).find('td').eq(0).css({'width':'1%'});
-        jQuery(this).find('td').eq(1).css({'width':'66%'})
-        jQuery(this).find('td').eq(2).css({'width':'18%'})
-        jQuery(this).find('td').eq(3).css({'width':'15%'})
-    });
+
+    if (!set_hide_home_reply) {
+        jQuery('div.child > table > tbody >tr ').each(function(){
+            jQuery(this).find('td').eq(0).css({'width':'1%'});
+            jQuery(this).find('td').eq(1).css({'width':'66%'})
+            jQuery(this).find('td').eq(2).css({'width':'18%'})
+            jQuery(this).find('td').eq(3).css({'width':'15%'})
+        });
+    }
 
 
 
@@ -110,6 +130,7 @@
     //贴子页回帖每楼间距加大
     //添加边框线
     jQuery('body > .container  > table:eq(2) >tbody>tr>td:eq(2) >table').css({'margin': '30px 0px','border': '1px solid #E5E5E5'});
+    jQuery('body > .container  > table:eq(2) >tbody>tr>td:eq(2)>table').css('margin','0%');
 
     //移除签名的横线,用hr标签代替.
     jQuery('body > .container  > table:eq(2) >tbody>tr>td:eq(2) >table >tbody ').each(function(){
